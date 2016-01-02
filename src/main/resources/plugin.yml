@@ -1,0 +1,16 @@
+name: PlayerData
+version: 2.0.0-B2
+description: Keep track of your players playtime and other info.
+author: Chaka
+website: http://criliscraft.cf/playerdata
+main: cf.criliscraft.playerdata.PlayerData
+commands:
+  pd:
+    description: The plugins main command.
+    usage: /<command> [subcommand] [player]
+permissions:
+  pd.*:
+    description: Contains all of the plugins permissions.
+    default: op
+    children:
+      pd.player: true
