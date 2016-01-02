@@ -1,0 +1,18 @@
+STEP 1: To make this plugin work properly please create a database in your sql server.
+STEP 2: Execute the following SQL query in that database.
+
+CREATE TABLE players (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100),
+    uuid VARCHAR(500),
+    joinedOn BIGINT(20),
+    joinTime BIGINT(20) DEFAULT '0',
+    lastLogin BIGINT(20) DEFAULT '0',
+    logins INT(11) DEFAULT '0',
+    logouts INT(11) DEFAULT '0',
+    playtime BIGINT(20) DEFAULT '0'
+)
+
+STEP 3: Update your config.yml
+
+That is all for now.

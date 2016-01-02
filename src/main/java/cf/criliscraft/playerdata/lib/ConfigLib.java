@@ -15,6 +15,7 @@ public class ConfigLib {
     private static File dataFolder;
 
     private static File configFile;
+    private static File sqlInfo;
 
     private static FileConfiguration config;
 
@@ -25,6 +26,7 @@ public class ConfigLib {
         this.dataFolder = plugin.getDataFolder();
 
         this.configFile = new File(plugin.getDataFolder(), "config.yml");
+        this.sqlInfo = new File(plugin.getDataFolder(), "INSTALL.txt");
 
         this.config = YamlConfiguration.loadConfiguration(configFile);
     }
@@ -34,6 +36,11 @@ public class ConfigLib {
             plugin.getLogger().log(Level.INFO, "config.yml not found, Creating new one.");
             plugin.saveResource("config.yml", true);
             plugin.getLogger().log(Level.INFO, "Successfully created config.yml");
+        }
+        if (!(sqlInfo.exists())) {
+            plugin.getLogger().log(Level.INFO, "INSTALL.txt not found, Creating new one.");
+            plugin.saveResource("INSTALL.txt", true);
+            plugin.getLogger().log(Level.INFO, "Successfully created install.TXT");
         }
     }
 

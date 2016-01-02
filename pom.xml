@@ -6,7 +6,7 @@
 
     <groupId>cf.criliscraft.playerdata</groupId>
     <artifactId>PlayerData</artifactId>
-    <version>2.0.0-B1</version>
+    <version>2.0.0-B6</version>
 
     <repositories>
         <repository>

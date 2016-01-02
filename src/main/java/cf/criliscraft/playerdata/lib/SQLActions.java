@@ -55,6 +55,7 @@ public class SQLActions {
         return false;
     }
 
+    //TODO Returns a null pointer, Fix this
     public void installDatabase() {
         if (!(playersTableExists())) {
             try {

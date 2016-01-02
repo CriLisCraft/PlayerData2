@@ -12,7 +12,7 @@ import java.util.logging.Level;
 
 public class PlayerData extends JavaPlugin {
 
-    public static final String VERSION = "2.0.0-B1";
+    public static final String VERSION = "2.0.0-B6";
 
     private SQLActions sql;
 
@@ -30,15 +30,17 @@ public class PlayerData extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        //Initialize Database
-        sql.installDatabase();
-
         //Config initialization
         new ConfigLib(this);
         ConfigLib.createAllFiles();
 
         //Perm Lib Initialization
         PermLib.init(this.pm);
+
+        //Initialize SQLActions
+        new SQLActions(this);
+        //TODO Null pointer
+        //sql.installDatabase();
 
         //Listeners
         new PlayerListener(this);
