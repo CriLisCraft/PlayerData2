@@ -2,10 +2,7 @@ package cf.criliscraft.playerdata.lib;
 
 import cf.criliscraft.playerdata.PlayerData;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 
 public class SQLActions {
@@ -40,6 +37,47 @@ public class SQLActions {
         return con;
     }
 
+    public boolean playersTableExists() {
+        try {
+            DatabaseMetaData dbm = getConnection().getMetaData();
+
+            ResultSet res = dbm.getTables(null, null, "players", null);
+
+            if (res.next()) {
+                return true; //Exists
+            } else {
+                return false; //Does not exist
+            }
+        } catch (SQLException e) {
+            this.plugin.getLogger().log(Level.WARNING, "ERROR: " + e);
+        }
+
+        return false;
+    }
+
+    public void installDatabase() {
+        if (!(playersTableExists())) {
+            try {
+                Statement stmt = getConnection().createStatement();
+                String sql = "CREATE TABLE " + db + ".players (\n" +
+                        "\tid INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,\n" +
+                        "    username VARCHAR(100),\n" +
+                        "    uuid VARCHAR(500),\n" +
+                        "    joinedOn BIGINT(20),\n" +
+                        "    joinTime BIGINT(20) DEFAULT '0',\n" +
+                        "    lastLogin BIGINT(20) DEFAULT '0',\n" +
+                        "    logins INT(11) DEFAULT '0',\n" +
+                        "    logouts INT(11) DEFAULT '0',\n" +
+                        "    playtime BIGINT(20) DEFAULT '0'\n" +
+                        ")";
+
+                stmt.executeUpdate(sql);
+            } catch (SQLException e) {
+                this.plugin.getLogger().log(Level.WARNING, "ERROR: " + e);
+            }
+        }
+    }
+
     public void createPlayerRowLogin(String username, String uuid) {
 
         String query = "INSERT INTO players (username, uuid, joinedOn, joinTime, lastLogin, logins) VALUES (?, ?, ?, ?, ?, ?)";
@@ -61,27 +99,39 @@ public class SQLActions {
         }
     }
 
-    public void updatePlayerRowLogin(String username) {
+    public void updatePlayerRowLogin(String uuid) {
 
-        String query = "UPDATE players SET joinTime=?, lastLogin=?, logins=? WHERE username=?";
+        String query = "UPDATE players SET joinTime=?, lastLogin=?, logins=? WHERE uuid=?";
 
         try {
             PreparedStatement stmt = getConnection().prepareStatement(query);
             stmt.setLong(1, cur);
             stmt.setLong(2, cur);
             stmt.setInt(3, 2);
-            stmt.setString(4, username);
+            stmt.setString(4, uuid);
         } catch (SQLException e) {
             this.plugin.getLogger().log(Level.WARNING, "ERROR: " + e);
         }
     }
 
-    public boolean hasPlayedBefore(String username) {
+    public boolean hasPlayedBefore(String uuid) {
 
-        if (username.equals("Chaka")) {
-            return true;
-        } else {
-            return false;
+        String query = "SELECT * FROM players WHERE uuid=?";
+
+        try {
+            PreparedStatement stmt = getConnection().prepareStatement(query);
+            stmt.setString(1, uuid);
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            this.plugin.getLogger().log(Level.WARNING, "ERROR: " + e);
         }
+
+        return false;
     }
 }

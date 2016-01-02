@@ -25,8 +25,8 @@ public class PlayerListener implements Listener {
         String username = player.getName();
         String uuid = player.getUniqueId().toString();
 
-        if (sql.hasPlayedBefore(username)) {
-            sql.updatePlayerRowLogin(username);
+        if (sql.hasPlayedBefore(uuid)) {
+            sql.updatePlayerRowLogin(uuid);
         } else {
             sql.createPlayerRowLogin(username, uuid);
         }
